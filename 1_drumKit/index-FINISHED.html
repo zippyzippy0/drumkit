@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
+  <link rel="icon" href="https://fav.farm/✅" />
 </head>
 <body>
 
@@ -59,27 +59,24 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-window.addEventListener('keydown', function(e){
-  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-  console.log(key);
-  console.log(audio);
-  if(!audio) return;//stop function from running all together
-  audio.currentTime=0;//rewind to the start
-  audio.play();
-  console.log(key);
-  key.classList.add('playing');
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
 
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
 
-});
-function removeTransition(e){
-  if (e.propertyName !== `transform`) return;//skip if it is not a transform
-  console.log(e.propertyName);
-  this.classList.remove('playing');
-}
-const keys = document.querySelectorAll('.key');
-keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
 
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 </script>
 
 
